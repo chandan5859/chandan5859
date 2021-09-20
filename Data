@@ -1,0 +1,2 @@
+df1=pd.read_csv('mbti_1.csv')
+df1.head()
