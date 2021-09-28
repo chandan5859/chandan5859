@@ -1,0 +1,7 @@
+cnt_types = df1['type'].value_counts()
+
+plt.figure(figsize=(12,4))
+sns.barplot(cnt_types.index, cnt_types.values, alpha=0.8)
+plt.ylabel('Number of Occurrences', fontsize=12)
+plt.xlabel('Types', fontsize=12)
+plt.show()
