@@ -1,0 +1,10 @@
+## FEATURE ENGINEERING -> Adding features to the dataset
+ 
+df['type'] = df1['type']
+df['words_per_comment'] = df1['posts'].apply(lambda x: len(x.split())/50)
+df['links_per_comment'] = df1['posts'].apply(lambda x: x.count('http')/50)
+df['question_per_comment'] = df1['posts'].apply(lambda x: x.count('?')/50)
+df['img_per_comment'] = df1['posts'].apply(lambda x: x.count('jpg')/50)
+df['excl_per_comment'] = df1['posts'].apply(lambda x: x.count('!')/50)
+df['ellipsis_per_comment'] = df1['posts'].apply(lambda x: x.count('...')/50)
+df.head(10)
