@@ -1,0 +1,27 @@
+b_Pers = {'I':0, 'E':1,
+          'N':0, 'S':1,
+          'F':0, 'T':1,
+          'J':0, 'P':1}
+
+b_Pers_list = [{0:'I', 1:'E'},
+               {0:'N', 1:'S'},
+               {0:'F', 1:'T'},
+               {0:'J', 1:'P'}]
+
+def translate_personality(personality):
+    # transform mbti to binary vector
+   
+    return [b_Pers[l] for l in personality]
+
+def translate_back(personality):
+    # transform binary vector to mbti personality
+   
+    s = ""
+    for i, l in enumerate(personality):
+        s += b_Pers_list[i][l]
+    return s
+
+# Check ...
+d = df1.head(4)
+list_personality_bin = np.array([translate_personality(p) for p in d.type])
+print("Binarize MBTI list: \n%s" % list_personality_bin)
