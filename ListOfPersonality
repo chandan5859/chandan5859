@@ -1,0 +1,18 @@
+list_posts, list_personality  = pre_process_data(df1, remove_stop_words=True)
+
+list_personality
+
+df_a = pd.DataFrame(list_personality)
+df_a.head()
+
+df_b = pd.DataFrame(list_posts)
+df_b.head()
+
+dff1 = pd.concat([df_a, df_b, df1], axis=1)
+dff1.head()
+
+dff1.columns
+
+
+dff1.columns = ['I/E', 'N/S', 'F/T', 'J/P', 'cleaned_posts', 'type', 'raw_posts']
+dff1.head(10)
