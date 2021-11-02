@@ -1,0 +1,53 @@
+# Lemmatize
+    stemmer = PorterStemmer()
+    lemmatiser = WordNetLemmatizer()
+
+    # Cache the stop words in local storage for speed 
+    cachedStopWords = stopwords.words("english")
+
+    list_personality = []
+    list_posts = []
+    len_data = len(data)
+    i=0
+    
+    for row in data.iterrows():
+        #i+=1
+        #if (i % 500 == 0 or i == 1 or i == len_data):
+        #    print("%s of %s rows" % (i, len_data))
+            #print(row) # refers to the row object in dataframe
+            #print(row[1]) # row[1] refers to the data itself, row[0] would give the index
+
+        print(row)
+
+        ##### Remove and clean comments
+        posts = row[1].posts
+        print(posts)
+        
+        # Remove URLs
+        temp = re.sub('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', ' ', str(posts))
+        
+        # phrases that are not english letters are removed
+        temp = re.sub("[^a-zA-Z]", " ", temp)
+        temp = re.sub(' +', ' ', temp).lower()
+        
+        if remove_stop_words:
+            # Lemmatize the word -> i.e. "running", "ran", etc. becomes --> "run"
+            temp = " ".join([lemmatiser.lemmatize(w) for w in temp.split(' ') if w not in cachedStopWords])
+        else:
+            temp = " ".join([lemmatiser.lemmatize(w) for w in temp.split(' ')])
+        
+        # rare occurrences of the the class types "INTP", "INTJ" etc. also occur in the text, can be removed
+        if remove_mbti_profiles:
+            for t in unique_type_list:
+                temp = temp.replace(t,"")
+
+        print(row[1].type)
+
+        type_labelized = translate_personality(b_Pers, row[1].type)
+        list_personality.append(type_labelized)
+        list_posts.append(temp)
+
+    list_posts = np.array(list_posts)
+    
+    list_personality = np.array(list_personality)
+    return list_posts, list_personality
