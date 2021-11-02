@@ -1,0 +1,27 @@
+from flask import Flask, request, jsonify, render_template
+import re
+import pickle
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import nltk
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.corpus import stopwords 
+from nltk import word_tokenize
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import CountVectorizer
+import joblib
+
+### First, let's try LOGISTIC REGRESSION
+from sklearn.linear_model import LogisticRegression
+# Now, let's try SUPPORT VECTOR MACHINE (SVM)
+from sklearn.svm import SVC # "Support Vector Classifier" 
+# Now, let's try XGBoost Classifier
+from xgboost import XGBClassifier
+
+#nltk.download('stopwords')
+#nltk.download('wordnet')
+
+
+app = Flask(__name__)
