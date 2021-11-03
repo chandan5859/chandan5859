@@ -1,0 +1,34 @@
+def translate_personality(b_Pers, personality):
+    # transform mbti to binary vector
+    return [b_Pers[l] for l in personality]
+
+
+def translate_back(b_Pers_list, personality):
+    # transform binary vector to mbti personality
+    
+    s = ""
+    for i, l in enumerate(personality):
+        s += b_Pers_list[i][l]
+    return s
+
+
+
+def pre_process_data(data, remove_stop_words=True, remove_mbti_profiles=True):
+
+    b_Pers = {'I':0, 'E':1, 
+          'N':0, 'S':1, 
+          'F':0, 'T':1, 
+          'J':0, 'P':1}
+
+
+    b_Pers_list = [{0:'I', 1:'E'}, 
+                {0:'N', 1:'S'}, 
+                {0:'F', 1:'T'}, 
+                {0:'J', 1:'P'}]
+
+
+    # We want to remove these from the posts
+    unique_type_list = ['INFJ', 'ENTP', 'INTP', 'INTJ', 'ENTJ', 'ENFJ', 'INFP', 'ENFP',
+        'ISFP', 'ISTP', 'ISFJ', 'ISTJ', 'ESTP', 'ESFP', 'ESTJ', 'ESFJ']
+    
+    unique_type_list = [x.lower() for x in unique_type_list]
