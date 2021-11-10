@@ -1,0 +1,70 @@
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+
+@app.route('/predict',methods=['POST'])
+def predict():
+    form_input = str(list(request.form.values())[0])
+    #form_input = new_test_posts_1 #### this should be the input from the form
+
+    #cntizer = CountVectorizer(analyzer="word", 
+    #                      max_features=1500, 
+    #                      tokenizer=None,    
+    #                      preprocessor=None, 
+    #                      stop_words=None,  
+    #                      max_df=0.7,
+    #                      min_df=0.1) 
+
+    #tfizer = TfidfTransformer()
+
+    b_Pers = {'I':0, 'E':1, 
+          'N':0, 'S':1, 
+          'F':0, 'T':1, 
+          'J':0, 'P':1}
+
+
+    b_Pers_list = [{0:'I', 1:'E'}, 
+                {0:'N', 1:'S'}, 
+                {0:'F', 1:'T'}, 
+                {0:'J', 1:'P'}]
+
+
+    cntizer = pickle.load(open("./models/vectorizer/cntizer.pkl", "rb"))
+    tfizer = pickle.load(open("./models/vectorizer/tfizer.pkl", "rb"))
+
+    df_new = pd.DataFrame(columns=('posts', 'type'))
+    df_new.loc[0] = [form_input , 'INFP']
+
+    test_data = pd.DataFrame(data={'type': ['INTP'], 'posts': [df_new.posts]})
+    print(test_data.posts)
+    print(test_data.type)
+
+    test_posts, dummy  = pre_process_data(test_data, remove_stop_words=True)
+
+    print(test_posts)
+
+    result_list = []
+
+    test_cnt = cntizer.transform(test_posts)
+    test_tfidf = tfizer.transform(test_cnt).toarray()
+
+    ### FOR LOGISTIC Regression
+    for l in range(0, 4):
+        
+        # make predictions for my test data
+        if l==0:
+            model = joblib.load('./models/logreg/model1.pkl')
+        if l==1:
+            model = joblib.load('./models/logreg/model2.pkl')
+        if l==2:
+            model = joblib.load('./models/logreg/model3.pkl')
+        if l==3:
+            model = joblib.load('./models/logreg/model4.pkl')
+            
+        making_test_pred = model.predict(test_tfidf)
+        print(making_test_pred)
+        result_list.append(making_test_pred[0])
+    
+    logreg_text = "Logistic Regression:     " + translate_back(b_Pers_list, result_list) # --> actual is INTP
+    result_list = []
