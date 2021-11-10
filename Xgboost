@@ -1,0 +1,27 @@
+### FOR XGBoost
+    for l in range(0, 4):
+        
+        # make predictions for my test data
+        if l==0:
+            model = joblib.load('./models/xgb/model1.pkl')
+        if l==1:
+            model = joblib.load('./models/xgb/model2.pkl')
+        if l==2:
+            model = joblib.load('./models/xgb/model3.pkl')
+        if l==3:
+            model = joblib.load('./models/xgb/model4.pkl')
+
+        making_test_pred = model.predict(test_tfidf)
+        print(making_test_pred)
+        result_list.append(making_test_pred[0])
+
+    xgb_text = "XGBoost:     " + translate_back(b_Pers_list, result_list) # --> actual is INTP
+    result_list = []    
+
+
+    return render_template('index.html', logreg_text = logreg_text, svm_text = svm_text, xgb_text = xgb_text)
+
+
+
+if _name_ == "_main_":
+    app.run(debug=True)
